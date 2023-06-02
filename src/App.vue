@@ -1,26 +1,45 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <!-- Se parece a Lazy Load pero con componentes, default es lo que se muestra al final fallback es lo que se muestra mientras carga-->
+  <Suspense>
+    <template #default>
+      <Home />
+    </template>
+    <template #fallback>
+      <SplashScreen />
+    </template>
+  </Suspense>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import SplashScreen from "@/components/SplashScreen.vue"
+import { defineAsyncComponent } from 'vue';
 
 export default {
-  name: 'App',
   components: {
-    HelloWorld
+    SplashScreen,
+    //se muestra solo mientras carga la pagina
+    Home: defineAsyncComponent(() => 
+      //usar promesa para retardar la carga de la app
+      new Promise((resolve) => {
+        setTimeout(() => {
+          resolve(import("./components/Home.vue"))
+        }, 2500);
+      })
+    )
   }
 }
 </script>
 
 <style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+html,
+body,
+.app {
+  min-height: 100vh;
+  margin: 0;
+  font-family: Arial, Helvetica, sans-serif;
+}
+* {
+  --brand-green: #04b500;
+  --brand-blue: #0689b0;
 }
 </style>

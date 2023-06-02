@@ -1,9 +1,30 @@
 <template>
+    <!-- Los slot nos permiten mostrar el contenido de cada componente -->
     <div class="header">
 
         <slot name="header"></slot>
     </div>
+    <div class="resume">
+
+        <slot name="resume"></slot>
+    </div>
+    <div class="movements">
+        <div class="head" @click="showMovements = !showMovements">
+            <div class="grip"></div>
+        </div>
+        <!--Se crea una variable con v-show para mostrar y ocultar el body-->
+        <div class="body" v-show="showMovements">
+
+            <slot name="movements"></slot>
+        </div>
+    </div>
 </template>
+
+<script setup>
+import { ref } from "vue";
+
+const showMovements = ref(false); 
+</script>
 
 <style scoped>
 header,
